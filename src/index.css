@@ -1,0 +1,22 @@
+body, #root {
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif;
+  background: #f7faff;
+  color: #222;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #e74c3c;
+  margin-bottom: 0.5em;
+}
+
+p {
+  font-size: 1.1rem;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
