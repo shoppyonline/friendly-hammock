@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Analytics } from '@vercel/analytics/react';
 import DrawingGame from "./DrawingGame";
 import SpotTheDifferenceGame from "./SpotTheDifferenceGame";
 import Header from "./Header";
@@ -21,6 +22,7 @@ function App() {
       <Header />
       {games[page]}
       <Footer onPrevPage={handlePrev} onNextPage={handleNext} page={page} totalPages={games.length} />
+      <Analytics />
     </div>
   );
 }

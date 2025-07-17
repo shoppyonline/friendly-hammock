@@ -65,9 +65,79 @@ button[aria-label]:hover, button[aria-label]:focus {
 @media (max-width: 600px) {
   .App {
     padding: 0.5em;
+    padding-bottom: 90px; /* Add space for footer on mobile */
   }
   button[aria-label] {
     font-size: 1rem;
     padding: 0.5em 1.2em;
+  }
+  .footer-mobile {
+    min-height: 70px !important;
+    padding-bottom: 8px !important;
+  }
+  .add-characters-btn-mobile-hide {
+    display: none !important;
+  }
+  .footer-logo {
+    max-height: 32px !important;
+    height: 32px !important;
+    display: flex;
+    align-items: center;
+  }
+  .game_controls {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+  .game_controls > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .game_controls button {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .spot-diff-image-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .spot-diff-image-container img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  /* DrawingGame mobile styles */
+  .drawinggame-card {
+    padding: 8px 2px 8px 2px !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    gap: 12px !important;
+  }
+  .drawinggame-canvas-container {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    aspect-ratio: 1.5 !important;
+    min-width: 0 !important;
+  }
+  .drawinggame-toolbar {
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 8px 2px !important;
+    gap: 16px !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .drawinggame-toolbar button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  html, body, #root, .App, .drawinggame-card, .drawinggame-toolbar, .drawinggame-canvas-container {
+    font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive, Arial, sans-serif !important;
   }
 }

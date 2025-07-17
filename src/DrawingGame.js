@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import {
   Pencil,
   Palette,
@@ -263,10 +264,100 @@ function DrawingGame() {
     pointerEvents: 'none',
   };
 
-    return (
+  // Helper to detect mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 600;
+
+  // Pencil size slider modal for mobile
+  const pencilSizeSliderModal = isMobile && showSizeSlider ? ReactDOM.createPortal(
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      background: 'rgba(0,0,0,0.2)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }} onClick={() => setShowSizeSlider(false)}>
+      <div
+        style={{
+          background: '#fff',
+          border: '1px solid #EFEFEF',
+          borderRadius: 12,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+          padding: '24px 16px',
+          zIndex: 10000,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <input
+          type="range"
+          min={6}
+          max={20}
+          value={size}
+          onChange={e => setSize(Number(e.target.value))}
+          style={{
+            width: 120,
+            height: 32,
+            margin: '0 0 12px 0',
+          }}
+        />
+        <div style={{ fontSize: 16 }}>Pencil Size: {size}</div>
+        <button style={{ marginTop: 12, padding: '6px 18px', borderRadius: 8, border: 'none', background: '#148EFF', color: '#fff', fontWeight: 600, fontSize: 15, cursor: 'pointer' }} onClick={() => setShowSizeSlider(false)}>Close</button>
+      </div>
+    </div>,
+    document.body
+  ) : null;
+
+  // Mobile tooltips
+  const mobileTooltips = isMobile && hoveredControl ? ReactDOM.createPortal(
+    <div style={{
+      position: 'fixed',
+      left: 0,
+      right: 0,
+      bottom: 70,
+      zIndex: 9999,
+      display: 'flex',
+      justifyContent: 'center',
+      pointerEvents: 'none',
+    }}>
+      <div style={{
+        background: '#7A7A7A',
+        borderRadius: 8,
+        fontFamily: 'Comic Sans MS',
+        fontStyle: 'normal',
+        fontWeight: 400,
+        fontSize: 13,
+        lineHeight: '16px',
+        textAlign: 'center',
+        color: '#FFFFFF',
+        padding: '8px 16px',
+        whiteSpace: 'nowrap',
+        pointerEvents: 'auto',
+      }}>
+        {hoveredControl === 'pencil' && 'Pencil'}
+        {hoveredControl === 'size' && 'Pencil Size'}
+        {hoveredControl === 'palette' && 'Color'}
+        {hoveredControl === 'addchar' && 'Add Characters'}
+        {hoveredControl === 'eraser' && 'Eraser'}
+        {hoveredControl === 'undo' && 'Undo'}
+        {hoveredControl === 'redo' && 'Redo'}
+        {hoveredControl === 'clear' && 'Clear'}
+        {hoveredControl === 'save' && 'Save'}
+      </div>
+    </div>,
+    document.body
+  ) : null;
+
+  return (
     <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: 0, margin: 0 }}>
       <div
-        className="the_card"
+        className="the_card drawinggame-card"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -284,7 +375,7 @@ function DrawingGame() {
           }}
         >
           {/* 1. Canvas */}
-          <div style={{ width: '100%', position: 'relative', aspectRatio: '540 / 340', maxWidth: '100%' }}>
+          <div className="drawinggame-canvas-container" style={{ width: '100%', position: 'relative', aspectRatio: '540 / 340', maxWidth: '100%' }}>
             <canvas
               ref={bgCanvasRef}
               width={540}
@@ -348,10 +439,10 @@ function DrawingGame() {
             </div>
           </div>
           {/* 3. Toolbar */}
-          <div style={{
+          <div className="drawinggame-toolbar" style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
             padding: '8px 12px',
             gap: 16,
@@ -362,6 +453,8 @@ function DrawingGame() {
             width: '100%',
             maxWidth: 540,
             position: 'relative',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
           }}>
             {/* Pencil tool button */}
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -376,7 +469,7 @@ function DrawingGame() {
               >
                 <Pencil size={24} weight="regular" color={tool === TOOL.PENCIL ? '#fff' : '#444'} strokeWidth={3} />
               </button>
-              {hoveredControl === 'pencil' && (
+              {!isMobile && hoveredControl === 'pencil' && (
                 <div style={tooltipStyle}>Pencil</div>
               )}
             </div>
@@ -415,10 +508,10 @@ function DrawingGame() {
                   }}
                 />
               </button>
-              {hoveredControl === 'size' && (
+              {!isMobile && hoveredControl === 'size' && (
                 <div style={tooltipStyle}>Pencil Size</div>
               )}
-              {showSizeSlider && (
+              {!isMobile && showSizeSlider && (
                 <div
                   ref={sliderRef}
                   style={{
@@ -515,7 +608,7 @@ function DrawingGame() {
               )}
             </div>
             {/* Add Characters */}
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="add-characters-btn-mobile-hide" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <button
                 title="Add Characters"
                 style={iconButtonStyle(tool === TOOL.ADD_CHAR)}
@@ -618,6 +711,49 @@ function DrawingGame() {
             </div>
           </div>
         </div>
+        {/* Mobile pencil size slider modal */}
+        {pencilSizeSliderModal}
+        {/* Mobile tooltips */}
+        {isMobile && hoveredControl && (
+          ReactDOM.createPortal(
+            <div style={{
+              position: 'fixed',
+              left: 0,
+              right: 0,
+              bottom: 70,
+              zIndex: 9999,
+              display: 'flex',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}>
+              <div style={{
+                background: '#7A7A7A',
+                borderRadius: 8,
+                fontFamily: 'Comic Sans MS',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                fontSize: 13,
+                lineHeight: '16px',
+                textAlign: 'center',
+                color: '#FFFFFF',
+                padding: '8px 16px',
+                whiteSpace: 'nowrap',
+                pointerEvents: 'auto',
+              }}>
+                {hoveredControl === 'pencil' && 'Pencil'}
+                {hoveredControl === 'size' && 'Pencil Size'}
+                {hoveredControl === 'palette' && 'Color'}
+                {hoveredControl === 'addchar' && 'Add Characters'}
+                {hoveredControl === 'eraser' && 'Eraser'}
+                {hoveredControl === 'undo' && 'Undo'}
+                {hoveredControl === 'redo' && 'Redo'}
+                {hoveredControl === 'clear' && 'Clear'}
+                {hoveredControl === 'save' && 'Save'}
+              </div>
+            </div>,
+            document.body
+          )
+        )}
       </div>
   );
 }

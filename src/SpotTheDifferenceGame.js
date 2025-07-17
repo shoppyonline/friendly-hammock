@@ -125,11 +125,12 @@ function SpotTheDifferenceGame() {
         display: "flex", 
         justifyContent: "space-between", 
         alignItems: "center",
-        margin: "16px 0"
+        margin: "16px 0",
+        gap: 16
       }}>
         {/* Progress Bar - Left aligned */}
         <div style={{ 
-          width: "300px", 
+          width: "100%", 
           background: "#f0f0f0", 
           borderRadius: "10px", 
           overflow: "hidden",
@@ -194,7 +195,7 @@ function SpotTheDifferenceGame() {
         position: "relative"
       }}>
         {/* Top Image and indicators */}
-        <div ref={topContainerRef} style={{ position: 'relative', display: 'inline-block', width: 'auto', maxWidth: '100%' }}>
+        <div ref={topContainerRef} className="spot-diff-image-container" style={{ position: 'relative', display: 'inline-block', width: '100%', maxWidth: '100%' }}>
           <img
             src={process.env.PUBLIC_URL + '/top_image.png'}
             alt="Top spot the difference"
@@ -213,7 +214,7 @@ function SpotTheDifferenceGame() {
           {showHint && renderIndicators(false)}
         </div>
         {/* Bottom Image and indicators */}
-        <div ref={bottomContainerRef} style={{ position: 'relative', display: 'inline-block', width: 'auto', maxWidth: '100%' }}>
+        <div ref={bottomContainerRef} className="spot-diff-image-container" style={{ position: 'relative', display: 'inline-block', width: '100%', maxWidth: '100%' }}>
           <img
             src={process.env.PUBLIC_URL + '/bottom_image.png'}
             alt="Bottom spot the difference"
